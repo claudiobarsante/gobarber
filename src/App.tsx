@@ -1,7 +1,14 @@
 import React from 'react';
+import GlobalStyle from './styles/global';
+import SignIn from './pages/SignIn/index';
 
 function App() {
-  return <h1>Bora codar !!!</h1>;
+  return (
+    <div>
+      <SignIn />
+      <GlobalStyle />
+    </div>
+  );
 }
 
 export default App;
