@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import React from 'react';
+import { useForm } from 'react-hook-form';
 import { FiLogIn, FiMail, FiLock } from 'react-icons/fi';
 import goBarberLogo from '../../assets/logo.svg';
 
@@ -14,25 +14,40 @@ import {
 import Input from './../../components/Input/index';
 import Button from '../../components/Button';
 import { useAuth } from '../../context/AuthContext';
+import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
+
+type Inputs = {
+  email: string;
+  password: string;
+};
+
+const SignInSchema = yup.object().shape({
+  email: yup
+    .string()
+    .required('You must inform your e-mail')
+    .email('Inform an valid e-mail'),
+  password: yup.string().required('You must inform your password'),
+});
 
 const SignIn = () => {
-  console.log('werwer', `${process.env.REACT_APP_TOKEN_ENDPOINT}`);
+  //
+  const { register, handleSubmit, errors } = useForm<Inputs>({
+    resolver: yupResolver(SignInSchema),
+  });
+
   const { signIn } = useAuth();
-
-  useEffect(() => {
-    // async function load() {
-    //   const rep = await signIn({
-    //     email: 'clbmribas@gmail.com',
-    //     password: 'Claudio@2021',
-    //   });
-    //   console.log('rep ', rep);
-    // }
-
-    signIn({
-      email: 'clbmrias@gmail.com',
+  /*
+email: 'clbmribas@gmail.com',
       password: 'Claudio@2021',
-    }).then(response => console.log('res', response));
-  }, [signIn]);
+*/
+  const submitForm = async ({ email, password }: Inputs) => {
+    await signIn({
+      email,
+      password,
+    });
+  };
+
   return (
     <Container>
       <Left>
@@ -42,14 +57,25 @@ const SignIn = () => {
         />
         <Content>
           <h1>Login</h1>
-          <Input name="email" icon={FiMail} placeholder="E-mail" />
-          <Input
-            name="password"
-            icon={FiLock}
-            placeholder="Password"
-            type="password"
-          />
-          <Button>Sign in</Button>
+          <form onSubmit={handleSubmit(submitForm)}>
+            <Input
+              id="email"
+              name="email"
+              icon={FiMail}
+              placeholder="E-mail"
+              inputRef={register}
+            />
+            <Input
+              id="password"
+              name="password"
+              icon={FiLock}
+              placeholder="Password"
+              type="password"
+              inputRef={register}
+            />
+            <Button type="submit">Sign in</Button>
+            {errors && <p>{errors.email?.message}</p>}
+          </form>
           <a href="forgot">Forgot my password</a>
         </Content>
       </Left>

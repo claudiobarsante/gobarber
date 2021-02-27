@@ -37,6 +37,7 @@ const AuthProvider = ({ children }: Props) => {
 
   const signIn = useCallback(async ({ email, password }) => {
     try {
+      console.log('passei');
       const response = await signInService({ email, password });
       console.log('response ', response);
     } catch (error) {
