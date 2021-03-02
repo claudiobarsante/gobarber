@@ -13,7 +13,7 @@ import {
 } from './styles';
 import Input from './../../components/Input/index';
 import Button from '../../components/Button';
-import { useAuth } from '../../context/AuthContext';
+import { useAuth, AuthProvider } from '../../context/AuthContext';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
@@ -37,6 +37,7 @@ const SignIn = () => {
   });
 
   const { signIn } = useAuth();
+
   /*
 email: 'clbmribas@gmail.com',
       password: 'Claudio@2021',

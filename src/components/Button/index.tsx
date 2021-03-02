@@ -2,7 +2,7 @@ import React, { ButtonHTMLAttributes } from 'react';
 
 import { Container } from './styles';
 
-//could use type rather than interface because it's not overwriting
+//could use type rather than interface because it's not overwriting or extending
 type Props = ButtonHTMLAttributes<HTMLButtonElement>;
 
 const Button = ({ children, ...rest }: Props) => (
