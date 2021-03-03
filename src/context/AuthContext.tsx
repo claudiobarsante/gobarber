@@ -1,25 +1,33 @@
 import React, { createContext, useContext, useState, useCallback } from 'react';
+import { CurrentUser } from '../models/User';
 import signInService from './../services/authService';
 
-interface AuthState {
+type AuthState = {
   token: string;
-  user: object;
-}
+  user: User;
+};
 
-interface SignInCredentials {
+type SignInCredentials = {
   email: string;
   password: string;
-}
-
-interface AuthContextData {
-  user: object;
-  signIn(credentials: SignInCredentials): Promise<void>;
-  signOut(): void;
-}
-
-type Props = {
-  children: React.ReactNode;
 };
+
+type User = {
+  nickname: string;
+  roles: string;
+  user_id: string;
+  user_name: string;
+};
+
+type AuthContextData = {
+  user: User;
+  signIn(credentials: SignInCredentials): Promise<string>;
+  signOut(): void;
+};
+
+interface Props {
+  children: React.ReactNode;
+}
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
@@ -36,15 +44,27 @@ const AuthProvider = ({ children }: Props) => {
   });
 
   const signIn = useCallback(async ({ email, password }) => {
+    //
     try {
-      console.log('passei');
       const response = await signInService({ email, password });
-      console.log('response ', response);
+
+      const token = response.data.access_token;
+
+      const { nickname, roles, user_id, user_name }: User = response.data;
+      const user = new CurrentUser(nickname, roles, user_id, user_name);
+
+      localStorage.setItem('@GoBarber:token', token);
+      localStorage.setItem('@GoBarber:user', JSON.stringify(user));
+
+      setData({ token, user });
+      return 'SUCCESS';
     } catch (error) {
       const message = error.toString();
 
       if (message.includes('code 400')) {
+        console.log('message ', message);
       }
+      return 'iNVALID E-MAIL OR PASSWORD';
     }
   }, []);
 

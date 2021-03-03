@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FiLogIn, FiMail, FiLock } from 'react-icons/fi';
 import goBarberLogo from '../../assets/logo.svg';
@@ -11,12 +11,15 @@ import {
   Left,
   Right,
 } from './styles';
+
 import Input from './../../components/Input/index';
 import Button from '../../components/Button';
-import { useAuth, AuthProvider } from '../../context/AuthContext';
+import { useAuth } from '../../context/AuthContext';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useHistory } from 'react-router';
 
+import Modal from './../../components/Modal/index';
 type Inputs = {
   email: string;
   password: string;
@@ -25,38 +28,47 @@ type Inputs = {
 const SignInSchema = yup.object().shape({
   email: yup
     .string()
-    .required('You must inform your e-mail')
-    .email('Inform an valid e-mail'),
-  password: yup.string().required('You must inform your password'),
+    .required('Email is required')
+    .email('Please, inform an valid e-mail'),
+  password: yup.string().required('Password is required'),
 });
 
 const SignIn = () => {
   //
   const { register, handleSubmit, errors } = useForm<Inputs>({
     resolver: yupResolver(SignInSchema),
+    mode: 'onBlur',
   });
 
+  const [isOpen, setIsOpen] = useState(false);
+
   const { signIn } = useAuth();
+  const history = useHistory();
 
-  /*
-email: 'clbmribas@gmail.com',
-      password: 'Claudio@2021',
-*/
   const submitForm = async ({ email, password }: Inputs) => {
-    await SignInSchema.validate(
-      { email, password },
-      {
-        abortEarly: false, // para retorar todos os erros de uma só vez, por padrão ele vai retornando um a um
-      },
-    );
+    try {
+      await SignInSchema.validate(
+        { email, password },
+        {
+          abortEarly: false, // para retorar todos os erros de uma só vez, por padrão ele vai retornando um a um
+        },
+      );
 
-    await signIn({
-      email,
-      password,
-    });
+      const result = await signIn({
+        email: 'clbmribas@gmail.com',
+        password: 'Claudi@202',
+      });
+
+      if (result === 'SUCCESS') {
+        history.push('/appointment');
+      } else {
+        setIsOpen(true);
+      }
+    } catch (error) {
+      console.log('errors ', errors, '---', error);
+    }
   };
 
-  console.log('errors ', errors);
   return (
     <Container>
       <Left>
@@ -94,6 +106,7 @@ email: 'clbmribas@gmail.com',
       <Right>
         <FrontImage />
       </Right>
+      <Modal isOpen={isOpen} />
     </Container>
   );
 };

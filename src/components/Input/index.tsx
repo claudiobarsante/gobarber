@@ -23,50 +23,25 @@ interface Props extends InputHTMLAttributes<HTMLInputElement> {
 }
 const Input = ({ name, inputRef, error, icon: Icon, ...rest }: Props) => {
   const [isFocused, setIsFocused] = useState(false);
-  const [isFilled, setIsFilled] = useState(false);
-  const [value, setValue] = useState('');
-
-  const methods = useForm();
-  const { control, getValues } = methods;
 
   const handleOnFocus = useCallback(() => {
     setIsFocused(true);
   }, []);
 
   const handleInputBlur = useCallback(() => {
-    console.log('get ', getValues('email'));
     setIsFocused(false);
-  }, [getValues]);
-
-  const handleOnChange = useCallback(text => {
-    console.log('text ', text);
-    setValue(text);
   }, []);
 
   console.log('isFocused ', isFocused);
   return (
-    <Container isErrored={!!error} isFocused={isFocused} isFilled={isFilled}>
+    <Container isErrored={!!error} isFocused={isFocused}>
       {Icon && <Icon size={20} />}
-      {/* <input
+      <input
         name={name}
         onFocus={handleOnFocus}
         onBlur={handleInputBlur}
         ref={inputRef}
         {...rest}
-      /> */}
-      <Controller
-        name={name}
-        control={control}
-        render={props => (
-          <input
-            onFocus={handleOnFocus}
-            onBlur={handleInputBlur}
-            // onChange={e => props.onChange(setValue(e.target.value))}
-            ref={inputRef}
-            {...rest}
-            // value={value}
-          />
-        )}
       />
     </Container>
   );

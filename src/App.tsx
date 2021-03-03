@@ -1,15 +1,18 @@
 import React from 'react';
 import GlobalStyle from './styles/global';
-import SignIn from './pages/SignIn/index';
 import { AuthProvider } from './context/AuthContext';
+import Routes from './routes/index';
+import { BrowserRouter as Router } from 'react-router-dom';
 
 function App() {
   return (
     <div>
-      <AuthProvider>
-        <SignIn />
-      </AuthProvider>
-      <GlobalStyle />
+      <Router>
+        <AuthProvider>
+          <Routes />
+        </AuthProvider>
+        <GlobalStyle />
+      </Router>
     </div>
   );
 }
