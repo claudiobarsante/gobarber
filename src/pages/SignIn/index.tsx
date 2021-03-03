@@ -43,12 +43,20 @@ email: 'clbmribas@gmail.com',
       password: 'Claudio@2021',
 */
   const submitForm = async ({ email, password }: Inputs) => {
+    await SignInSchema.validate(
+      { email, password },
+      {
+        abortEarly: false, // para retorar todos os erros de uma só vez, por padrão ele vai retornando um a um
+      },
+    );
+
     await signIn({
       email,
       password,
     });
   };
 
+  console.log('errors ', errors);
   return (
     <Container>
       <Left>
@@ -65,6 +73,7 @@ email: 'clbmribas@gmail.com',
               icon={FiMail}
               placeholder="E-mail"
               inputRef={register}
+              error={errors.email?.message}
             />
             <Input
               id="password"
@@ -73,7 +82,9 @@ email: 'clbmribas@gmail.com',
               placeholder="Password"
               type="password"
               inputRef={register}
+              error={errors.password?.message}
             />
+
             <Button type="submit">Sign in</Button>
             {errors && <p>{errors.email?.message}</p>}
           </form>

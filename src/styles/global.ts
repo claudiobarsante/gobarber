@@ -22,6 +22,7 @@ html{
   --orange:#FF9000;
   --shape:#3E3B47;
   --white:#F4EDE8;
+  --error:#c53030;
 }
 
 body{
