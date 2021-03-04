@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FiLogIn, FiMail, FiLock } from 'react-icons/fi';
 import goBarberLogo from '../../assets/logo.svg';
+import { useToasts } from 'react-toast-notifications';
+import { ErrorMessage } from '@hookform/error-message';
 
 import {
   Container,
@@ -19,7 +21,6 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useHistory } from 'react-router';
 
-import Modal from './../../components/Modal/index';
 type Inputs = {
   email: string;
   password: string;
@@ -40,10 +41,9 @@ const SignIn = () => {
     mode: 'onBlur',
   });
 
-  const [isOpen, setIsOpen] = useState(false);
-
   const { signIn } = useAuth();
   const history = useHistory();
+  const { addToast } = useToasts();
 
   const submitForm = async ({ email, password }: Inputs) => {
     try {
@@ -62,7 +62,7 @@ const SignIn = () => {
       if (result === 'SUCCESS') {
         history.push('/appointment');
       } else {
-        setIsOpen(true);
+        addToast('An error occurred', { appearance: 'error' });
       }
     } catch (error) {
       console.log('errors ', errors, '---', error);
@@ -79,6 +79,11 @@ const SignIn = () => {
         <Content>
           <h1>Login</h1>
           <form onSubmit={handleSubmit(submitForm)}>
+            <ErrorMessage
+              name="email"
+              errors={errors}
+              render={({ message }) => <p>{message}</p>}
+            />
             <Input
               id="email"
               name="email"
@@ -86,6 +91,11 @@ const SignIn = () => {
               placeholder="E-mail"
               inputRef={register}
               error={errors.email?.message}
+            />
+            <ErrorMessage
+              name="password"
+              errors={errors}
+              render={({ message }) => <p>{message}</p>}
             />
             <Input
               id="password"
@@ -98,7 +108,6 @@ const SignIn = () => {
             />
 
             <Button type="submit">Sign in</Button>
-            {errors && <p>{errors.email?.message}</p>}
           </form>
           <a href="forgot">Forgot my password</a>
         </Content>
@@ -106,7 +115,6 @@ const SignIn = () => {
       <Right>
         <FrontImage />
       </Right>
-      <Modal isOpen={isOpen} />
     </Container>
   );
 };
