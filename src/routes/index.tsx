@@ -1,8 +1,9 @@
 import { Switch } from 'react-router-dom';
+/**/
+import Appointment from './../pages/Appointment/index';
 import BarberRoute from './BarberRoute';
 import SignIn from './../pages/SignIn/index';
 import SignUp from './../pages/SignUp/index';
-import Appointment from './../pages/Appointment/index';
 
 const Routes = () => (
   <Switch>

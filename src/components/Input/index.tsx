@@ -1,4 +1,4 @@
-import React, { useCallback, useState, InputHTMLAttributes, memo } from 'react';
+import React, { useCallback, useState, InputHTMLAttributes } from 'react';
 import { IconBaseProps } from 'react-icons';
 /**/
 import { Container } from './styles';
@@ -40,4 +40,4 @@ const Input = ({ name, inputRef, error, icon: Icon, ...rest }: Props) => {
   );
 };
 
-export default memo(Input);
+export default Input;

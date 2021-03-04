@@ -1,5 +1,6 @@
 import styled, { keyframes } from 'styled-components';
 import { shade } from 'polished';
+/**/
 import signInRightSideImage from '../../assets/sign-in.png';
 
 export const Container = styled.div`
@@ -74,6 +75,7 @@ export const Right = styled.div`
   }
   width: 0;
 `;
+
 export const AnimationContainer = styled.div`
   display: flex;
   flex-direction: column;

@@ -1,11 +1,13 @@
 import React, { createContext, useContext, useState, useCallback } from 'react';
+/**/
 import { CurrentUser } from '../models/User';
-import signInService from './../services/authService';
 import { Response } from '../types/response';
 import { ReturnedResponse } from './../models/ReturnedResponse';
+import signInService from './../services/authService';
+
 type AuthState = {
   token: string;
-  user: User;
+  user: UserInfo;
 };
 
 type SignInCredentials = {
@@ -13,7 +15,7 @@ type SignInCredentials = {
   password: string;
 };
 
-type User = {
+type UserInfo = {
   nickname: string;
   roles: string;
   user_id: string;
@@ -21,11 +23,10 @@ type User = {
 };
 
 type AuthContextData = {
-  user: User;
+  user: UserInfo;
   signIn(credentials: SignInCredentials): Promise<ReturnedResponse | undefined>;
   signOut(): void;
 };
-
 interface Props {
   children: React.ReactNode;
 }
@@ -52,7 +53,7 @@ const AuthProvider = ({ children }: Props) => {
 
       const token = response.data.access_token;
 
-      const { nickname, roles, user_id, user_name }: User = response.data;
+      const { nickname, roles, user_id, user_name }: UserInfo = response.data;
       const user = new CurrentUser(nickname, roles, user_id, user_name);
 
       localStorage.setItem('@GoBarber:token', token);
@@ -63,7 +64,7 @@ const AuthProvider = ({ children }: Props) => {
       return new ReturnedResponse(Response.Ok, '');
     } catch (error) {
       const message = error.toString();
-      console.log('error--', message);
+
       if (message.includes('code 400')) {
         return new ReturnedResponse(
           Response.BadRequest,

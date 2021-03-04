@@ -1,10 +1,19 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FiLogIn, FiMail, FiLock } from 'react-icons/fi';
-import goBarberLogo from '../../assets/logo.svg';
 import { useToasts } from 'react-toast-notifications';
 import { ErrorMessage } from '@hookform/error-message';
-
+import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useHistory } from 'react-router';
+/**/
+import ActivityIndicator from './../../components/ActivityIndicator/index';
+import Button from '../../components/Button';
+import Input from './../../components/Input/index';
+import goBarberLogo from '../../assets/logo.svg';
+import { Response } from '../../types/response';
+import { useAuth } from '../../context/AuthContext';
+/*styles*/
 import {
   Container,
   Content,
@@ -13,15 +22,6 @@ import {
   Left,
   Right,
 } from './styles';
-
-import Input from './../../components/Input/index';
-import Button from '../../components/Button';
-import { useAuth } from '../../context/AuthContext';
-import * as yup from 'yup';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { useHistory } from 'react-router';
-import ActivityIndicator from './../../components/ActivityIndicator/index';
-import { Response } from '../../types/response';
 
 type Inputs = {
   email: string;
@@ -49,6 +49,7 @@ const SignIn = () => {
   const { addToast } = useToasts();
 
   const submitForm = async ({ email, password }: Inputs) => {
+    //
     try {
       await SignInSchema.validate(
         { email, password },
@@ -56,6 +57,7 @@ const SignIn = () => {
           abortEarly: false, // para retorar todos os erros de uma só vez, por padrão ele vai retornando um a um
         },
       );
+
       setIsLoading(true);
       const result = await signIn({
         email: 'clbmribas@gmail.com',
@@ -71,7 +73,13 @@ const SignIn = () => {
         });
       }
     } catch (error) {
-      console.log('errors ', errors, '---', error);
+      addToast(
+        'An unexpected error has occurred. Please wait a few minutes or contact us',
+        {
+          appearance: 'error',
+          autoDismiss: true,
+        },
+      );
     }
     setIsLoading(false);
   };
