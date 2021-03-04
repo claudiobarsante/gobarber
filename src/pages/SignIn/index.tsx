@@ -20,6 +20,8 @@ import { useAuth } from '../../context/AuthContext';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useHistory } from 'react-router';
+import ActivityIndicator from './../../components/ActivityIndicator/index';
+import { Response } from '../../types/response';
 
 type Inputs = {
   email: string;
@@ -36,6 +38,7 @@ const SignInSchema = yup.object().shape({
 
 const SignIn = () => {
   //
+  const [isLoading, setIsLoading] = useState(false);
   const { register, handleSubmit, errors } = useForm<Inputs>({
     resolver: yupResolver(SignInSchema),
     mode: 'onBlur',
@@ -53,20 +56,24 @@ const SignIn = () => {
           abortEarly: false, // para retorar todos os erros de uma só vez, por padrão ele vai retornando um a um
         },
       );
-
+      setIsLoading(true);
       const result = await signIn({
         email: 'clbmribas@gmail.com',
         password: 'Claudi@202',
       });
 
-      if (result === 'SUCCESS') {
+      if (result?.code === Response.Ok) {
         history.push('/appointment');
       } else {
-        addToast('An error occurred', { appearance: 'error' });
+        addToast(result?.message, {
+          appearance: 'error',
+          autoDismiss: true,
+        });
       }
     } catch (error) {
       console.log('errors ', errors, '---', error);
     }
+    setIsLoading(false);
   };
 
   return (
@@ -109,6 +116,7 @@ const SignIn = () => {
 
             <Button type="submit">Sign in</Button>
           </form>
+          {isLoading && <ActivityIndicator />}
           <a href="forgot">Forgot my password</a>
         </Content>
       </Left>

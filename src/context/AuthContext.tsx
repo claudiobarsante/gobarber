@@ -1,7 +1,8 @@
 import React, { createContext, useContext, useState, useCallback } from 'react';
 import { CurrentUser } from '../models/User';
 import signInService from './../services/authService';
-
+import { Response } from '../types/response';
+import { ReturnedResponse } from './../models/ReturnedResponse';
 type AuthState = {
   token: string;
   user: User;
@@ -21,7 +22,7 @@ type User = {
 
 type AuthContextData = {
   user: User;
-  signIn(credentials: SignInCredentials): Promise<string>;
+  signIn(credentials: SignInCredentials): Promise<ReturnedResponse | undefined>;
   signOut(): void;
 };
 
@@ -32,6 +33,7 @@ interface Props {
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
 const AuthProvider = ({ children }: Props) => {
+  //
   const [data, setData] = useState<AuthState>(() => {
     const token = localStorage.getItem('@GoBarber:token');
     const user = localStorage.getItem('@GoBarber:user');
@@ -57,14 +59,24 @@ const AuthProvider = ({ children }: Props) => {
       localStorage.setItem('@GoBarber:user', JSON.stringify(user));
 
       setData({ token, user });
-      return 'SUCCESS';
+
+      return new ReturnedResponse(Response.Ok, '');
     } catch (error) {
       const message = error.toString();
-
+      console.log('error--', message);
       if (message.includes('code 400')) {
-        console.log('message ', message);
+        return new ReturnedResponse(
+          Response.BadRequest,
+          'Invalid e-mail or password',
+        );
       }
-      return 'iNVALID E-MAIL OR PASSWORD';
+
+      if (message.includes('Network Error')) {
+        return new ReturnedResponse(
+          Response.InternalServerError,
+          "Verify your internet connection. If it's working, maybe our services are offline. Try again in a few minutes",
+        );
+      }
     }
   }, []);
 

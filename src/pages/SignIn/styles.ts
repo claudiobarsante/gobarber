@@ -57,6 +57,7 @@ export const Content = styled.div`
     text-decoration: none;
     margin-top: 2.4rem;
   }
+
   p {
     color: var(--error);
   }

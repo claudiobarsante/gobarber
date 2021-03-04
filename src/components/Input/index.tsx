@@ -1,13 +1,7 @@
-import React, {
-  useCallback,
-  useRef,
-  useState,
-  InputHTMLAttributes,
-} from 'react';
+import React, { useCallback, useState, InputHTMLAttributes, memo } from 'react';
 import { IconBaseProps } from 'react-icons';
-import { FiAlertCircle } from 'react-icons/fi';
+/**/
 import { Container } from './styles';
-import { useForm, Controller } from 'react-hook-form';
 
 /*
 1-To extend all properties of the input 
@@ -32,7 +26,6 @@ const Input = ({ name, inputRef, error, icon: Icon, ...rest }: Props) => {
     setIsFocused(false);
   }, []);
 
-  console.log('isFocused ', isFocused);
   return (
     <Container isErrored={!!error} isFocused={isFocused}>
       {Icon && <Icon size={20} />}
@@ -47,4 +40,4 @@ const Input = ({ name, inputRef, error, icon: Icon, ...rest }: Props) => {
   );
 };
 
-export default Input;
+export default memo(Input);
