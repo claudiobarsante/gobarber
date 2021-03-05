@@ -23,6 +23,7 @@ export const Container = styled.div<ContainerProps>`
     css`
       border-color: var(--orange);
       color: var(--orange);
+      transition: border-color 1s, color 1s;
     `}
 
   ${props =>
@@ -30,14 +31,14 @@ export const Container = styled.div<ContainerProps>`
     css`
       border-color: var(--error);
       color: var(--error);
+      transition: border-color 1s, color 1s;
     `}  
-
     
 
   input {
     flex: 1;
     background: transparent;
-    border: 1px solid green;
+    border: 0;
     color: var(--white);
 
     &::placeholder {
