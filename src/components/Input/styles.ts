@@ -9,7 +9,7 @@ export const Container = styled.div<ContainerProps>`
   width: 34rem;
   height: 5.6rem;
   background: var(--inputs);
-  border-radius: 10px;
+  border-radius: 1rem;
   border: 2px solid var(--inputs);
   padding: 16px;
   color: var(--gray-hard);
