@@ -6,6 +6,7 @@ import signInRightSideImage from '../../assets/sign-in.png';
 export const Container = styled.div`
   height: 100vh;
   display: flex;
+  background: var(--background);
 `;
 
 const appearFromLeft = keyframes`
@@ -30,7 +31,6 @@ export const Left = styled.div`
   }
 
   background: var(--background);
-  // animation: ${appearFromLeft} 1s;
 
   img {
     margin-top: 12.2rem;
@@ -41,6 +41,7 @@ export const Content = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  animation: ${appearFromLeft} 1s;
 
   border: 1px solid red;
   width: 100%;
@@ -76,35 +77,35 @@ export const Right = styled.div`
   width: 0;
 `;
 
-export const AnimationContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  animation: ${appearFromLeft} 1s;
+// export const AnimationContainer = styled.div`
+//   display: flex;
+//   flex-direction: column;
+//   justify-content: center;
+//   align-items: center;
+//   animation: ${appearFromLeft} 1s;
 
-  form {
-    margin: 8rem 0;
-    width: 34rem;
-    text-align: center;
+//   form {
+//     margin: 8rem 0;
+//     width: 34rem;
+//     text-align: center;
 
-    h1 {
-      margin-bottom: 2.4rem;
-    }
+//     h1 {
+//       margin-bottom: 2.4rem;
+//     }
 
-    a {
-      color: va(--white);
-      display: block; //usar o display block para o margin top funcionar
-      margin-top: 2.4rem;
-      text-decoration: none;
-      transition: background-color 0.2s;
+//     a {
+//       color: va(--white);
+//       display: block; //usar o display block para o margin top funcionar
+//       margin-top: 2.4rem;
+//       text-decoration: none;
+//       transition: background-color 0.2s;
 
-      &:hover {
-        color: ${shade(0.2, '#f4ede8')};
-      }
-    }
-  }
-`;
+//       &:hover {
+//         color: ${shade(0.2, '#f4ede8')};
+//       }
+//     }
+//   }
+// `;
 
 export const FrontImage = styled.div`
   background: url(${signInRightSideImage}) no-repeat;

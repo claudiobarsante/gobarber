@@ -14,14 +14,7 @@ import goBarberLogo from '../../assets/logo.svg';
 import { Response } from '../../types/response';
 import { useAuth } from '../../context/AuthContext';
 /*styles*/
-import {
-  Container,
-  Content,
-  FrontImage,
-  AnimationContainer,
-  Left,
-  Right,
-} from './styles';
+import { Container, Content, FrontImage, Left, Right } from './styles';
 
 type Inputs = {
   email: string;
