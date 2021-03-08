@@ -1,5 +1,5 @@
 import styled, { keyframes } from 'styled-components';
-import { shade } from 'polished';
+//import { shade } from 'polished';
 /**/
 import signInRightSideImage from '../../assets/sign-in.png';
 
