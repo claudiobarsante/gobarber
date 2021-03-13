@@ -7,14 +7,14 @@ import { ToastProvider } from 'react-toast-notifications';
 function App() {
   return (
     <div>
-      <Router>
-        <ToastProvider>
+      <ToastProvider>
+        <Router>
           <AuthProvider>
             <Routes />
           </AuthProvider>
-        </ToastProvider>
-        <GlobalStyle />
-      </Router>
+          <GlobalStyle />
+        </Router>
+      </ToastProvider>
     </div>
   );
 }

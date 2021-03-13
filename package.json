@@ -1,4 +1,16 @@
 {
+  "jest":{
+    "transformIgnorePatterns": [
+      "/node_modules/(?!@hookform)"
+    ],
+    "collectCoverageFrom": [
+      "src/pages/**/*.tsx",
+      "src/components/**/*.tsx",
+      "src/context/*.tsx",
+      "!src/context/index.tsx"
+    ]
+  
+  },
   "name": "gobarber",
   "version": "0.1.0",
   "private": true,

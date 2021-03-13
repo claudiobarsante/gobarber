@@ -53,12 +53,13 @@ const SignIn = () => {
 
       setIsLoading(true);
       const result = await signIn({
-        email: 'clbmribas@gmail.com',
-        password: 'Claudi@202',
+        email: email,
+        password: password,
       });
 
       if (result?.code === Response.Ok) {
         history.push('/appointment');
+        console.log('passei');
       } else {
         addToast(result?.message, {
           appearance: 'error',
