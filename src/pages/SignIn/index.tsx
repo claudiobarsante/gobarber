@@ -40,9 +40,9 @@ const SignIn = () => {
   const { signIn } = useAuth();
   const history = useHistory();
   const { addToast } = useToasts();
-
   const submitForm = async ({ email, password }: Inputs) => {
     //
+
     try {
       await SignInSchema.validate(
         { email, password },
@@ -50,16 +50,15 @@ const SignIn = () => {
           abortEarly: false, // para retorar todos os erros de uma só vez, por padrão ele vai retornando um a um
         },
       );
-
       setIsLoading(true);
       const result = await signIn({
         email: email,
         password: password,
       });
 
+      console.log('passei ', result);
       if (result?.code === Response.Ok) {
         history.push('/appointment');
-        console.log('passei');
       } else {
         addToast(result?.message, {
           appearance: 'error',
